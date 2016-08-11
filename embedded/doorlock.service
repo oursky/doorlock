@@ -1,0 +1,10 @@
+[Unit]
+Description=Doorlock Controller Daemon
+
+[Service]
+User=oursky
+WorkingDirectory=/home/oursky/doorlock/embedded
+ExecStart=/usr/bin/npm start
+
+[Install]
+WantedBy=multi-user.target
