@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/core.async "0.2.385"]
                  [com.taoensso/timbre "4.7.0"]
-                 [clj-gpio "0.2.0"]
+                 [http-kit "2.2.0"]
                  ]
-  :profiles {:uberjar {:aot :all}}
+  :aot :all
   :main com.oursky.doorlock.core)

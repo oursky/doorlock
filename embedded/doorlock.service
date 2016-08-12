@@ -3,8 +3,7 @@ Description=Doorlock Controller Daemon
 
 [Service]
 User=oursky
-WorkingDirectory=/home/oursky/doorlock/embedded
-ExecStart=/usr/bin/npm start
+ExecStart=/usr/bin/java -jar /home/oursky/doorlock-1.0.0-SNAPSHOT-standalone.jar
 
 [Install]
 WantedBy=multi-user.target
