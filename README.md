@@ -33,7 +33,6 @@ Diagrams are saved as `txt` files, you can import them under `File > Import From
 ```
 [~/]$ git clone ...
 [~/doorlock/embedded]$ lein uberjar
-
 ```
 The standalone JAR is now in `doorlock/embedded/target/doorlock-<version>-standalone.jar`.
 
@@ -45,6 +44,7 @@ The standalone JAR is now in `doorlock/embedded/target/doorlock-<version>-standa
 * wiringpi-git (AUR)
 
 **Install as systemd service:**
+
 1. copy the standalone JAR to `/home/oursky/`
 2. copy `doorlock.service` to `/etc/systemd/system/`
 3. enable and start the service:
