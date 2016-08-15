@@ -9,6 +9,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "bleno": "^0.4.0",
+    "bleno": "^0.4.0"
   }
 }
