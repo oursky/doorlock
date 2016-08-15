@@ -53,9 +53,10 @@ function openDoor() {
 }
 
 function tokenWithDateExpr(expr) {
-  return platform === 'darwin' ?
-    execSync(`echo ${secret}${expr} | md5 | awk '{print $1}'`) :
-    execSync(`echo ${secret}${expr} | md5sum | awk '{print $1}'`);
+  const token = platform === 'darwin' ?
+    execSync(`echo -n ${secret}${expr} | md5 | awk '{print $1}'`) :
+    execSync(`echo -n ${secret}${expr} | md5sum | awk '{print $1}'`);
+  return token.toString('utf8').substr(0, 32);
 }
 
 function genTokens() {
