@@ -3,12 +3,15 @@
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 
+const secret = process.argv[2] || 'secret';
+
 /**
  * BLENO
  */
 const bleno = require('bleno');
 const PrimaryService = bleno.PrimaryService;
 const Characteristic = bleno.Characteristic;
+const platform = bleno.platform;
 
 /**
  * Constants
@@ -30,9 +33,9 @@ const primaryService = new PrimaryService({
         return;
       }
 
-      console.log('data: ', data.toString('utf8'));
-      const token = process.argv[2] || 'secret';
-      const isValid = data.toString('utf8') === token;
+      const tokens = genTokens();
+      const input = data.toString('utf8');
+      const isValid = tokens.filter((t) => input === t).length > 0;
 
       if (isValid) {
         openDoor();
@@ -47,6 +50,22 @@ const primaryService = new PrimaryService({
 function openDoor() {
   console.log('openDoor');
   exec(`curl localhost:8090 --header 'X-Source: BLE'`);
+}
+
+function tokenWithDateExpr(expr) {
+  return platform === 'darwin' ?
+    execSync(`echo ${secret}${expr} | md5 | awk '{print $1}'`) :
+    execSync(`echo ${secret}${expr} | md5sum | awk '{print $1}'`);
+}
+
+function genTokens() {
+  const exprs = [
+    `$(expr $(date +%s) / 20 - 1)`,
+    `$(expr $(date +%s) / 20)`,
+    `$(expr $(date +%s) / 20 + 1)`,
+  ];
+
+  return exprs.map(tokenWithDateExpr);
 }
 
 function startAdvertising() {
