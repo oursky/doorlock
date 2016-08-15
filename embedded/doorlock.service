@@ -3,7 +3,7 @@ Description=Doorlock Controller Daemon
 
 [Service]
 User=oursky
-ExecStart=/usr/bin/node /home/oursky/doorlock.js
+ExecStart=/usr/bin/java -jar /home/oursky/doorlock.jar
 
 [Install]
 WantedBy=multi-user.target

@@ -31,25 +31,21 @@ Diagrams are saved as `txt` files, you can import them under `File > Import From
 **Build:**
 ```
 [~/]$ git clone ...
-[~/doorlock/embedded]$ lein cljsbuild once
+[~/doorlock/embedded]$ lein uberjar
 ```
-The compiled JS is now in `doorlock/embedded/dist/index.js`.
-
-**Note:**
-It is highly recommended that you build the JS file on a modern x86 computer.
-Compilation takes around 30 secs on an i7 laptop.
+The compiled JAR is now in `doorlock/embedded/target/doorlock-<version>-standalone.jar`.
 
 ### Deploy
 **Embedded OS:** ArchLinux ARM
 
 **Dependencies:**
 
-* nodejs
+* java
 * wiringpi-git (AUR)
 
 **Install as systemd service:**
 
-1. copy the compiled JS to `/home/oursky/doorlock.js`
+1. copy the compiled JAR to `/home/oursky/doorlock.jar`
 2. copy `doorlock.service` to `/etc/systemd/system/`
 3. enable and start the service:
 ```
