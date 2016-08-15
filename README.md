@@ -26,7 +26,6 @@ Diagrams are saved as `txt` files, you can import them under `File > Import From
 
 **Dependencies:**
 
-* clojure
 * leiningen
 
 **Build:**
@@ -34,18 +33,19 @@ Diagrams are saved as `txt` files, you can import them under `File > Import From
 [~/]$ git clone ...
 [~/doorlock/embedded]$ lein uberjar
 ```
-The standalone JAR is now in `doorlock/embedded/target/doorlock-<version>-standalone.jar`.
+The compiled JAR is now in `doorlock/embedded/target/doorlock-<version>-standalone.jar`.
 
 ### Deploy
 **Embedded OS:** ArchLinux ARM
 
 **Dependencies:**
+
 * java
 * wiringpi-git (AUR)
 
 **Install as systemd service:**
 
-1. copy the standalone JAR to `/home/oursky/`
+1. copy the compiled JAR to `/home/oursky/doorlock.jar`
 2. copy `doorlock.service` to `/etc/systemd/system/`
 3. enable and start the service:
 ```

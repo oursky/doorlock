@@ -10,10 +10,6 @@
 ; identify the trigger source by sending {:source <source>}
 (def unlock-chan (chan))
 
-(defn http-handler [req]
-  (>!! unlock-chan {:source :network})
-  {:status 200})
-
 (defn -main [& args]
   ; setup GPIO via wiringpi CLI interface
   ; the clj-gpio library does not support internal pull-up
@@ -45,6 +41,10 @@
              (log/info "Door Locked"))
            (recur (<! unlock-chan)))
 
-  (run-server http-handler {:ip "0.0.0.0" :port 8090})
+  (run-server (fn [req]
+                (>!! unlock-chan {:source (or (get-in req [:headers "x-source"])
+                                              :network)})
+                {:status 200})
+              {:ip "0.0.0.0" :port 8090})
 
   (log/info "=== Daemon Started ==="))
