@@ -1,0 +1,9 @@
+[Unit]
+Description=Doorlock BLE Advertising Daemon
+
+[Service]
+ExecStartPre=/usr/local/bin/hciconfig hci0 up
+ExecStart=/usr/bin/node /home/oursky/ble %i
+
+[Install]
+WantedBy=multi-user.target
