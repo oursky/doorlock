@@ -55,4 +55,20 @@ The compiled JAR is now in `doorlock/embedded/target/doorlock-<version>-standalo
 
 **Note:** If your username is not `oursky`, you need to edit `doorlock.service` accordingly.
 
+## BLE
+
+Running this service, your rpi would act as peripheral and advertise. You would need to connect to the device and write a generated time-based token to service 'fff0' characteristic 'fff0' to activiate open door.
+
+**Requirement**
+- http://www.elinux.org/RPi_Bluetooth_LE
+- node
+
+** Install as systemd service**
+2. copy `doorlock-ble.service` to `/etc/systemd/system/doorlock-ble@.service`
+3. enable and start the service:
+```
+[oursky ~/]$ sudo systemctl enable doorlock-ble@<your-secret>
+[oursky ~/]$ sudo systemctl start doorlock-ble@<your-secret>
+```
+
 ## App
