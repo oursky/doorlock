@@ -12,21 +12,8 @@
 
 (defn -main [& args]
   ; setup GPIO via wiringpi CLI interface
-  ; the clj-gpio library does not support internal pull-up
   (sh "gpio" "mode" "0" "up")
   (sh "gpio" "mode" "1" "out")
-
-  ; button event listener
-  ; hold down for atleast 200ms to trigger
-  ; will emit event every 25000ms if held down
-  (go-loop []
-           (if (= 1 (read-string (:out (sh "gpio" "read" "0"))))
-             (sh "gpio" "wfi" "0" "falling")
-             (<! (timeout 2500)))
-           (<! (timeout 200))
-           (when (= 0 (read-string (:out (sh "gpio" "read" "0"))))
-             (>! unlock-chan {:source :button}))
-           (recur))
 
   ; listen on unlock-chan for unlock events
   ; if a new unlock event is revieved before the 3000ms timeout, the door is kept open.
@@ -41,10 +28,22 @@
              (log/info "Door Locked"))
            (recur (<! unlock-chan)))
 
+  ; button event listener
+  ; hold down for atleast 200ms to trigger
+  ; will emit event every 25000ms if held down
+  (go-loop []
+           (if (= 1 (read-string (:out (sh "gpio" "read" "0"))))
+             (sh "gpio" "wfi" "0" "falling")
+             (<! (timeout 2500)))
+           (<! (timeout 200))
+           (when (= 0 (read-string (:out (sh "gpio" "read" "0"))))
+             (>! unlock-chan {:source :button}))
+           (recur))
+
+  ; http event listener
   (run-server (fn [req]
-                (>!! unlock-chan {:source (or (get-in req [:headers "x-source"])
-                                              :network)})
+                (>!! unlock-chan {:source (or (get-in req [:headers "x-source"]) :network)})
                 {:status 200})
-              {:ip "0.0.0.0" :port 8090})
+              {:ip "127.0.0.1" :port 8090})
 
   (log/info "=== Daemon Started ==="))
