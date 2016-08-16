@@ -61,11 +61,11 @@ Running this service, your rpi would act as peripheral and advertise. You would 
 
 **Requirement**
 - http://www.elinux.org/RPi_Bluetooth_LE
-- node
+- node 6.x
 
-** Install as systemd service**
-2. copy `doorlock-ble.service` to `/etc/systemd/system/doorlock-ble@.service`
-3. enable and start the service:
+**Install as systemd service**
+- copy `doorlock-ble.service` to `/etc/systemd/system/doorlock-ble@.service`
+- enable and start the service:
 ```
 [oursky ~/]$ sudo systemctl enable doorlock-ble@<your-secret>
 [oursky ~/]$ sudo systemctl start doorlock-ble@<your-secret>
