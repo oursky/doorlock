@@ -58,7 +58,7 @@ The compiled JAR is now in `daemon-doorlock/target/doorlock-<version>-standalone
 
 **Runtime Dependencies:**
 
-* Java 8
+* java
 * wiringpi-git (AUR)
 
 **Install as systemd service:**
@@ -81,20 +81,24 @@ Running this service, the rpi would act as peripheral and advertise. You would n
 
 * bluez
 * pi-bluetooth (AUR)
-* node `6.x`
+* nodejs
+* npm
 
 **Install as systemd service:**
 
-1. copy `doorlock-ble@.service` to `/etc/systemd/system/`
-2. enable and start the service:
+1. copy `index.js` and `package.json` to `/home/oursky/ble`
+2. copy `doorlock-ble@.service` to `/etc/systemd/system/`
+3. setup, enable and start the service:
 ```
-[oursky ~/]$ sudo systemctl enable doorlock-ble@<your-secret>
-[oursky ~/]$ sudo systemctl start doorlock-ble@<your-secret>
+[oursky ~/ble]$ npm install
+[oursky ~/ble]$ sudo systemctl enable doorlock-ble@<your-secret>
+[oursky ~/ble]$ sudo systemctl start doorlock-ble@<your-secret>
 ```
 
 ### Skygear Trigger Daemon
 
 Listen for unlock requests from Skygear ...
+
 
 ## OpenSky App
 
