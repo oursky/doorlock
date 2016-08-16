@@ -1,9 +1,0 @@
-[Unit]
-Description=Doorlock Controller Daemon
-
-[Service]
-User=oursky
-ExecStart=/usr/bin/java -jar /home/oursky/doorlock.jar
-
-[Install]
-WantedBy=multi-user.target
