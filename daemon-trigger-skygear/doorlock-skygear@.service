@@ -2,7 +2,7 @@
 Description=Doorlock Skygear Trigger Daemon
 
 [Service]
-ExecStart=/usr/bin/node /home/oursky/skygear
+ExecStart=/usr/bin/node /home/oursky/doorlock/daemon-trigger-skygear %i
 
 [Install]
 WantedBy=multi-user.target

@@ -2,7 +2,7 @@
 Description=Doorlock BLE Advertising Daemon
 
 [Service]
-ExecStart=/usr/bin/node /home/oursky/ble %i
+ExecStart=/usr/bin/node /home/oursky/doorlock/daemon-trigger-ble %i
 
 [Install]
 WantedBy=multi-user.target

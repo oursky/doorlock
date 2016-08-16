@@ -4,5 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "skygear": "^0.14.0"
   }
 }
