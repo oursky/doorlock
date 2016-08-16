@@ -71,4 +71,22 @@ Running this service, your rpi would act as peripheral and advertise. You would 
 [oursky ~/]$ sudo systemctl start doorlock-ble@<your-secret>
 ```
 
+**Enable RPi Watchdog:**
+
+```
+# pacman -S watchdog
+# systemctl enable watchdog
+# systemctl start watchdog
+```
+
+```/etc/watchdog.conf
+ping = 127.0.0.1
+max-load-1 = 24
+watchdog-timeout = 10
+watchdog-device = /dev/watchdog
+realtime = yes
+priority = 1
+```
+
+
 ## App
