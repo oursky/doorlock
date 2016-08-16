@@ -45,31 +45,6 @@ priority = 1
 
 Responsible for interacting with hardware connected to the Pi. Exposes a HTTP API listening on `127.0.0.1:8090`, any requests sent to this socket will trigger an unlock. An optional header `X-Source` can be sent to identify the triggering source (e.g. Bluetooth LE). Written in clojure, runs on JVM.
 
-**System:** ArchLinux ARM
-
-**Enable Watchdog:**
-
-```
-[~/]$ pacman -S watchdog
-[~/]$ systemctl enable watchdog
-[~/]$ systemctl start watchdog
-```
-
-```
-# /etc/watchdog.conf
-
-ping = 127.0.0.1
-max-load-1 = 24
-watchdog-timeout = 10
-watchdog-device = /dev/watchdog
-realtime = yes
-priority = 1
-```
-
-### Doorlock Daemon
-
-Responsible for interacting with hardware connected to the Pi. Exposes a HTTP API listening on `127.0.0.1:8090`, any requests sent to this socket will trigger an unlock. An optional header `X-Source` can be sent to identify the triggering source (e.g. Bluetooth LE). Written in clojure, runs on JVM.
-
 **Build Dependencies:**
 
 * leiningen
