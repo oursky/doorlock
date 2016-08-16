@@ -1,0 +1,8 @@
+[Unit]
+Description=Doorlock Skygear Trigger Daemon
+
+[Service]
+ExecStart=/usr/bin/node /home/oursky/skygear
+
+[Install]
+WantedBy=multi-user.target

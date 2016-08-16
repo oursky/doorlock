@@ -1,0 +1,9 @@
+{
+  "name": "doorlock-ble",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bleno": "^0.4.0"
+  }
+}
