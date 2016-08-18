@@ -35,7 +35,7 @@
            (if (= 1 (read-string (:out (sh "gpio" "read" "0"))))
              (sh "gpio" "wfi" "0" "falling")
              (<! (timeout 2500)))
-           (<! (timeout 200))
+           (<! (timeout 100))
            (when (= 0 (read-string (:out (sh "gpio" "read" "0"))))
              (>! unlock-chan {:source :button}))
            (recur))
