@@ -5,8 +5,19 @@ const skygear = require('skygear');
 
 const apiKey = process.argv[2] || '';
 
+const channel = '&chima-open-door';
+
+function onConnectionOpen() {
+  console.log("daemon-trigger-skygear: connection open");
+}
+
+function onConnectionClose() {
+  console.log("daemon-trigger-skygear: connection close");
+  skygear.on(channel, onReceiveOpenDoor);
+}
+
 function onReceiveOpenDoor(data) {
-  console.log('openDoor');
+  console.log('daemon-trigger-skygear: open door');
   exec(`curl localhost:8090 --header 'X-Source: Skygear'`);
 }
 
@@ -15,6 +26,8 @@ skygear.config({
   apiKey: apiKey,
 }).then(() => {
   skygear.loginWithUsername('__master_chima', '__master_chima_password').then(() => {
-    skygear.on('&chima-open-door', onReceiveOpenDoor);
+    skygear.pubsub.onOpen(onConnectionOpen);
+    skygear.pubsub.onClose(onConnectionClose);
+    skygear.on(channel, onReceiveOpenDoor);
   });
 });
