@@ -13,7 +13,6 @@ function onConnectionOpen() {
 
 function onConnectionClose() {
   console.log("daemon-trigger-skygear: connection close");
-  skygear.on(channel, onReceiveOpenDoor);
 }
 
 function onReceiveOpenDoor(data) {
