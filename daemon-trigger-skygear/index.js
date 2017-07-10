@@ -30,6 +30,15 @@ function onConnectionClose() {
   }
 }
 
+function onConnectionError() {
+  console.log("daemon-trigger-skygear: connection error");
+
+  if (skygear.currentUser) {
+    console.log("daemon-trigger-skygear: try to reconnect");
+    skygear.pubsub._reconnect();
+  }
+}
+
 function onReceiveOpenDoor(data) {
   console.log('daemon-trigger-skygear: open door');
   exec(`curl localhost:8090 --header 'X-Source: Skygear'`);
@@ -56,6 +65,9 @@ skygear.config({
   skygear.pubsub.onClose(onConnectionClose);
   skygear.on(channel, onReceiveOpenDoor);
   skygear.on(heartbeatChannel, onHeartbeat);
+
+  // skygear does not provide pubsub error callback D:
+  skygear.pubsub._ws.onerror = onConnectionError;
 }).catch((err) => {
   console.log("daemon-trigger-skygear: failed to start skygear client", err);
 });
