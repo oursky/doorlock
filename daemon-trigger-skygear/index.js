@@ -13,12 +13,12 @@ const heartbeatChannel = '&chima-open-door-heartbeat';
 const heartbeatInterval = 1000 * 60;
 function onConnectionOpen() {
   console.log("daemon-trigger-skygear: connection open");
-  
+
   if (heartbeatTimer == null) {
     heartbeatTimer = setInterval(function() {
 	skygear.pubsub.publish(heartbeatChannel, heartbeatCounter+1);
     }, heartbeatInterval);
-  }  
+  }
 }
 
 function onConnectionClose() {
@@ -49,10 +49,13 @@ skygear.config({
   endPoint: 'https://chimagun.skygeario.com/',
   apiKey: apiKey,
 }).then(() => {
-  skygear.loginWithUsername('__master_chima', '__master_chima_password').then(() => {
-    skygear.pubsub.onOpen(onConnectionOpen);
-    skygear.pubsub.onClose(onConnectionClose);
-    skygear.on(channel, onReceiveOpenDoor);
-    skygear.on(heartbeatChannel, onHeartbeat);
-  });
+  return skygear.loginWithUsername('__master_chima', '__master_chima_password');
+}).then(() => {
+  console.log("daemon-trigger-skygear: skygear client started");
+  skygear.pubsub.onOpen(onConnectionOpen);
+  skygear.pubsub.onClose(onConnectionClose);
+  skygear.on(channel, onReceiveOpenDoor);
+  skygear.on(heartbeatChannel, onHeartbeat);
+}).catch((err) => {
+  console.log("daemon-trigger-skygear: failed to start skygear client", err);
 });
