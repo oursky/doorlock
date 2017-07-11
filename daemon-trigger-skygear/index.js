@@ -5,6 +5,9 @@ const skygear = require('skygear');
 
 const apiKey = process.argv[2] || '';
 
+var reconnectSkygearTimer = null;
+const reconnectSkygearDelay = 1000 * 60;
+
 const channel = '&chima-open-door';
 
 var heartbeatTimer = null;
@@ -16,7 +19,7 @@ function onConnectionOpen() {
 
   if (heartbeatTimer == null) {
     heartbeatTimer = setInterval(function() {
-	skygear.pubsub.publish(heartbeatChannel, heartbeatCounter+1);
+      skygear.pubsub.publish(heartbeatChannel, heartbeatCounter + 1);
     }, heartbeatInterval);
   }
 }
@@ -54,20 +57,43 @@ function onHeartbeat(data) {
   heartbeatCounter = data;
 }
 
-skygear.config({
-  endPoint: 'https://chimagun.skygeario.com/',
-  apiKey: apiKey,
-}).then(() => {
-  return skygear.loginWithUsername('__master_chima', '__master_chima_password');
-}).then(() => {
-  console.log("daemon-trigger-skygear: skygear client started");
-  skygear.pubsub.onOpen(onConnectionOpen);
-  skygear.pubsub.onClose(onConnectionClose);
-  skygear.on(channel, onReceiveOpenDoor);
-  skygear.on(heartbeatChannel, onHeartbeat);
+function clearReconnectSkygear() {
+  if (reconnectSkygearTimer) {
+    clearTimeout(reconnectSkygearTimer);
+  }
 
-  // skygear does not provide pubsub error callback D:
-  skygear.pubsub._ws.onerror = onConnectionError;
-}).catch((err) => {
-  console.log("daemon-trigger-skygear: failed to start skygear client", err);
-});
+  reconnectSkygearTimer = null;
+}
+
+function scheduleReconnectSkygear() {
+  clearReconnectSkygear();
+  reconnectSkygearTimer = setTimeout(connectSkygear, reconnectSkygearDelay);
+}
+
+function connectSkygear() {
+  console.log('daemon-trigger-skygear: connect skygear');
+  skygear.config({
+    endPoint: 'https://chimagun.skygeario.com/',
+    apiKey: apiKey,
+  }).then(() => {
+    return skygear.loginWithUsername('__master_chima', '__master_chima_password');
+  }).then(() => {
+    console.log("daemon-trigger-skygear: skygear client started");
+    skygear.pubsub.onOpen(onConnectionOpen);
+    skygear.pubsub.onClose(onConnectionClose);
+    skygear.on(channel, onReceiveOpenDoor);
+    skygear.on(heartbeatChannel, onHeartbeat);
+
+    // skygear does not provide pubsub error callback D:
+    skygear.pubsub._ws.onerror = onConnectionError;
+
+    clearReconnectSkygear();
+  }).catch((err) => {
+    console.log("daemon-trigger-skygear: failed to start skygear client");
+    console.log(err);
+    scheduleReconnectSkygear();
+  });
+}
+
+// wait until the device is ready to connect to server
+scheduleReconnectSkygear();
