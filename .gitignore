@@ -76,3 +76,12 @@ xcuserdata
 *.moved-aside
 DerivedData
 *.xcuserstate
+
+*.pem
+*.cer
+*.cert
+*.p12
+*.pfx
+*.key
+.env
+docker-compose.override.yml
