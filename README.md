@@ -1,3 +1,18 @@
+# Migration done on 2021-11-16
+
+Node bundles TLS root certificates and does not respect system root certificates.
+Node v8 is too old to has the latest root certificate used by Let's encrypt.
+
+The following changes were done on the raspberry pi.
+
+- Installed Node 10.24.1 to work around certificate expiration.
+- Installed Node 8.17.0 to replace the existing Node 8.14.0
+- Edited /etc/systemd/system/doorlock-skygear@.service to use node 10.24.1
+- Edited /etc/systemd/system/doorlock-ble@.service to use node 8.17.0
+
+There was an attempt to also upgrade the Node used by doorlock-ble, but the dependency `bleno` works on Node 8 exclusively.
+Therefore, the Node version of doorlock-ble must be fixed at 8.
+
 # doorlock
 
 Oursky IoT doorlock system.
